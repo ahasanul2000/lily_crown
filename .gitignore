@@ -1,0 +1,3 @@
+.DS_Store
+# Local Composer binary — install Composer globally instead.
+backend_lily_crown/composer.phar

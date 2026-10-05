@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lily Crown | Elegance Fit for a Queen</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rose-gold': '#B76E79',
+                        'rose-light': '#FDDDE6',
+                        'luxury-black': '#1A1A1A',
+                        'ivory': '#FAFAF5',
+                        'gold-accent': '#D4AF37',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for nuances Tailwind utility can't catch easily */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(to right, #D4AF37, #F3E5AB, #B8860B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #B8860B 100%);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Wishlist Heart Animation */
+        .heart-btn.active i {
+            color: #ef4444; /* Tailwind red-500 */
+            animation: pulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-700 bg-ivory selection:bg-rose-200 selection:text-rose-900 overflow-x-hidden">
+
+    <!-- Preloader -->
+    <div id="loader">
+        <div class="text-center animate-pulse">
+            <h1 class="font-serif text-4xl text-rose-gold tracking-widest">Lily Crown</h1>
+            <p class="text-xs uppercase tracking-[0.3em] mt-2 text-gray-400">Loading Luxury</p>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-24 right-5 transform translate-x-full transition-transform duration-300 z-50 bg-white border-l-4 border-rose-gold shadow-2xl p-4 rounded-r flex items-center gap-3">
+        <i class="fa-solid fa-check-circle text-rose-gold text-xl"></i>
+        <div>
+            <h4 class="font-serif font-bold text-gray-800">Success</h4>
+            <p class="text-sm text-gray-500" id="toast-message">Item added to cart.</p>
+        </div>
+    </div>
+
+    <!-- 1. Navbar -->
+    <nav id="navbar" class="fixed w-full z-40 transition-all duration-300 py-4">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-luxury-black">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <img src="img/logo.png" style="height: 61px;" alt="" srcset="">
+            <!-- Logo -->
+            <!-- <a href="#" class="text-2xl md:text-3xl font-serif font-bold tracking-wider text-luxury-black group">
+                Lily <span class="text-rose-gold group-hover:text-gold-accent transition-colors">Crown</span>
+            </a> -->
+
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="text-sm uppercase tracking-widest hover:text-rose-gold transition-colors font-medium">Home</a>
+                <a href="#categories" class="text-sm uppercase tracking-widest hover:text-rose-gold transition-colors font-medium">Shop</a>
+                <a href="#featured" class="text-sm uppercase tracking-widest hover:text-rose-gold transition-colors font-medium">New Arrivals</a>
+                <a href="#about" class="text-sm uppercase tracking-widest hover:text-rose-gold transition-colors font-medium">About</a>
+            </div>
+
+            <!-- Icons -->
+            <div class="flex items-center space-x-6">
+                <button onclick="toggleWishlistModal()" class="relative hover:text-rose-gold transition-transform hover:scale-110">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-rose-gold text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full opacity-0 transition-opacity">0</span>
+                </button>
+                <button class="relative hover:text-rose-gold transition-transform hover:scale-110">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-luxury-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-lg md:hidden flex-col items-center py-6 space-y-4 border-t">
+            <a href="#home" class="text-sm uppercase tracking-widest">Home</a>
+            <a href="#categories" class="text-sm uppercase tracking-widest">Shop</a>
+            <a href="#featured" class="text-sm uppercase tracking-widest">New Arrivals</a>
+            <a href="#about" class="text-sm uppercase tracking-widest">About</a>
+        </div>
+    </nav>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlist-modal" class="fixed inset-0 bg-black/50 z-[60] hidden flex justify-end">
+        <div class="bg-white h-full w-full max-w-md p-8 shadow-2xl transform translate-x-full transition-transform duration-300" id="wishlist-content">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="font-serif text-2xl">Your Wishlist</h2>
+                <button onclick="toggleWishlistModal()" class="text-2xl hover:text-rose-gold"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div id="wishlist-items-container" class="space-y-4 overflow-y-auto h-[80vh]">
+                <!-- Wishlist items injected here -->
+                <div class="text-center text-gray-400 mt-10">
+                    <i class="fa-regular fa-heart text-4xl mb-4"></i>
+                    <p>Your wishlist is empty, Your Highness.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-rose-50 via-white to-amber-50">
+        <!-- Abstract Background Shapes -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-rose-100/30 rounded-bl-[100px] -z-10"></div>
+        <div class="absolute bottom-20 left-10 w-64 h-64 bg-yellow-100/40 rounded-full blur-3xl -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Text Content -->
+            <div class="order-2 md:order-1 space-y-6 scroll-reveal active">
+                <span class="text-rose-gold uppercase tracking-[0.2em] text-sm font-bold bg-rose-50 px-4 py-1 rounded-full inline-block mb-2">New Season 2024</span>
+                <h1 class="text-5xl md:text-7xl font-serif text-luxury-black leading-tight">
+                    Elegance Fit <br> 
+                    For A <span class="italic text-rose-gold">Queen</span>
+                </h1>
+                <p class="text-gray-500 text-lg md:w-3/4 font-light leading-relaxed">
+                    Discover a collection crafted for the modern woman who embraces her power and femininity. Luxury fashion, redefined.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#featured" class="px-8 py-4 bg-luxury-black text-white uppercase tracking-widest text-xs font-bold hover:bg-rose-gold transition-colors duration-300 shadow-xl">
+                        Shop Collection
+                    </a>
+                    <a href="#categories" class="px-8 py-4 border border-luxury-black text-luxury-black uppercase tracking-widest text-xs font-bold hover:bg-black hover:text-white transition-colors duration-300">
+                        Explore Categories
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-8 pt-8 opacity-70">
+                    <div>
+                        <p class="font-serif text-2xl">500+</p>
+                        <p class="text-xs uppercase tracking-wider">Premium Items</p>
+                    </div>
+                    <div class="w-px h-8 bg-gray-300"></div>
+                    <div>
+                        <p class="font-serif text-2xl">24k</p>
+                        <p class="text-xs uppercase tracking-wider">Happy Queens</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Image -->
+            <div class="order-1 md:order-2 relative flex justify-center animate-float">
+                <div class="relative z-10 w-full max-w-md aspect-[3/4] rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl border-4 border-white">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Luxury Fashion Model" class="w-full h-full object-cover">
+                    <!-- Overlay Gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+                <!-- Floating Elements -->
+                <div class="absolute -bottom-10 -right-10 bg-white p-4 shadow-xl rounded-lg z-20 max-w-[150px] animate-bounce" style="animation-duration: 3s;">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-star text-gold-accent text-xs"></i>
+                        <span class="text-xs font-bold">Top Rated</span>
+                    </div>
+                    <p class="font-serif text-sm">Silk Evening Gown</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Categories Section -->
+    <section id="categories" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <span class="text-rose-gold text-xs uppercase tracking-[0.3em]">Curated For You</span>
+                <h2 class="text-4xl font-serif mt-3 text-luxury-black">Shop By Category</h2>
+                <div class="w-16 h-px bg-rose-gold mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Category 1 -->
+                <div class="group relative h-96 overflow-hidden rounded-lg cursor-pointer scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Dresses">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-8 left-8 text-white">
+                        <h3 class="font-serif text-3xl mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Dresses</h3>
+                        <span class="text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 underline underline-offset-4">View Collection</span>
+                    </div>
+                </div>
+
+                <!-- Category 2 (Span 2 on desktop to make layout interesting) -->
+                <div class="group relative h-96 overflow-hidden rounded-lg cursor-pointer md:col-span-2 scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Jewelry">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-8 left-8 text-white">
+                        <h3 class="font-serif text-3xl mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Fine Jewelry</h3>
+                        <span class="text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 underline underline-offset-4">View Collection</span>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="group relative h-80 overflow-hidden rounded-lg cursor-pointer scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bags">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <h3 class="font-serif text-3xl text-white border-2 border-white px-6 py-2 uppercase tracking-widest hover:bg-white hover:text-black transition-all">Bags</h3>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="group relative h-80 overflow-hidden rounded-lg cursor-pointer scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Shoes">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                         <h3 class="font-serif text-3xl text-white border-2 border-white px-6 py-2 uppercase tracking-widest hover:bg-white hover:text-black transition-all">Shoes</h3>
+                    </div>
+                </div>
+
+                <!-- Category 5 -->
+                <div class="group relative h-80 overflow-hidden rounded-lg cursor-pointer scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Perfumes">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                     <div class="absolute inset-0 flex items-center justify-center">
+                         <h3 class="font-serif text-3xl text-white border-2 border-white px-6 py-2 uppercase tracking-widest hover:bg-white hover:text-black transition-all">Scents</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Featured Products -->
+    <section id="featured" class="py-24 bg-ivory">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 scroll-reveal">
+                <div>
+                    <span class="text-rose-gold text-xs uppercase tracking-[0.3em]">Royal Selection</span>
+                    <h2 class="text-4xl font-serif mt-3 text-luxury-black">Trending Now</h2>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex space-x-4 mt-6 md:mt-0 overflow-x-auto pb-2 md:pb-0" id="filter-buttons">
+                    <button class="text-sm uppercase tracking-widest border-b-2 border-rose-gold text-luxury-black pb-1">All</button>
+                    <button class="text-sm uppercase tracking-widest border-b-2 border-transparent text-gray-400 hover:text-luxury-black pb-1 transition-colors">Dresses</button>
+                    <button class="text-sm uppercase tracking-widest border-b-2 border-transparent text-gray-400 hover:text-luxury-black pb-1 transition-colors">Jewelry</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Generated via JS -->
+            </div>
+            
+            <div class="text-center mt-16">
+                 <button class="px-10 py-3 border border-gray-300 text-gray-500 uppercase tracking-widest text-xs hover:border-black hover:text-black transition-all">View All Products</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Why Lily Crown -->
+    <section id="about" class="py-24 bg-luxury-black text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-4 gap-12 text-center">
+                <!-- Feature 1 -->
+                <div class="space-y-4 scroll-reveal group">
+                    <div class="w-16 h-16 mx-auto bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-rose-gold transition-colors duration-300">
+                        <i class="fa-regular fa-gem text-2xl text-rose-light"></i>
+                    </div>
+                    <h3 class="font-serif text-xl">Premium Quality</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Handpicked fabrics and materials ensuring royalty in every stitch.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="space-y-4 scroll-reveal group delay-100">
+                    <div class="w-16 h-16 mx-auto bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-rose-gold transition-colors duration-300">
+                        <i class="fa-solid fa-crown text-2xl text-rose-light"></i>
+                    </div>
+                    <h3 class="font-serif text-xl">Queen-Fit Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Tailored fits designed to empower and accentuate elegance.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="space-y-4 scroll-reveal group delay-200">
+                    <div class="w-16 h-16 mx-auto bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-rose-gold transition-colors duration-300">
+                        <i class="fa-solid fa-shield-halved text-2xl text-rose-light"></i>
+                    </div>
+                    <h3 class="font-serif text-xl">Secure Payment</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Encrypted transactions for a worry-free shopping experience.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="space-y-4 scroll-reveal group delay-300">
+                    <div class="w-16 h-16 mx-auto bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-rose-gold transition-colors duration-300">
+                        <i class="fa-solid fa-truck-fast text-2xl text-rose-light"></i>
+                    </div>
+                    <h3 class="font-serif text-xl">Global Delivery</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Fast shipping to your palace, wherever it may be.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Testimonials -->
+    <section class="py-24 bg-rose-50">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <i class="fa-solid fa-quote-left text-4xl text-rose-200 mb-6 block"></i>
+            <div id="testimonial-slider" class="relative overflow-hidden h-64">
+                <!-- Slide 1 -->
+                <div class="absolute inset-0 transition-opacity duration-1000 flex flex-col items-center justify-center" id="slide-1">
+                    <p class="font-serif text-2xl md:text-3xl text-gray-800 italic leading-relaxed mb-6">"I have never felt more confident. The dress fit perfectly, and the packaging was an experience in itself."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-12 h-12 rounded-full border-2 border-rose-gold" alt="Customer">
+                        <div class="text-left">
+                            <p class="font-bold text-sm uppercase tracking-wider">Isabella Ross</p>
+                            <div class="text-gold-accent text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Newsletter -->
+    <section class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-2xl mx-auto px-6 text-center scroll-reveal">
+            <h2 class="text-3xl font-serif text-luxury-black mb-2">Join the Royal List</h2>
+            <p class="text-gray-500 mb-8">Subscribe to receive updates, access to exclusive deals, and more.</p>
+            
+            <form class="flex flex-col md:flex-row gap-4 relative" onsubmit="event.preventDefault(); document.getElementById('toast-message').innerText='Subscribed successfully!'; document.getElementById('toast').classList.remove('translate-x-full'); setTimeout(()=>{document.getElementById('toast').classList.add('translate-x-full')}, 3000);">
+                <input type="email" placeholder="Your Email Address" class="flex-1 bg-gray-50 border border-gray-200 px-6 py-4 outline-none focus:border-rose-gold transition-colors rounded-sm" required>
+                <button type="submit" class="gold-gradient-bg text-white px-8 py-4 font-bold uppercase tracking-widest text-sm hover:shadow-lg transition-shadow rounded-sm">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 9. Footer -->
+    <footer class="bg-gray-900 text-white pt-20 pb-10 border-t-4 border-rose-gold">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
+            <!-- Brand -->
+            <div class="col-span-1 md:col-span-1">
+            <img src="img/logo.png" style="height: 100px;" alt="" srcset="">
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">Redefining luxury for the modern woman. Elegance is not just a style, it is a way of life.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-rose-gold transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-rose-gold transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-rose-gold transition-colors"><i class="fa-brands fa-pinterest-p"></i></a>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div>
+                <h4 class="font-serif text-lg mb-6">Shop</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">New Arrivals</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Dresses</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Accessories</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Sale</a></li>
+                </ul>
+            </div>
+
+            <!-- Help -->
+            <div>
+                <h4 class="font-serif text-lg mb-6">Customer Care</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Shipping & Returns</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">Size Guide</a></li>
+                    <li><a href="#" class="hover:text-rose-gold transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h4 class="font-serif text-lg mb-6">Contact</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-location-dot mt-1 text-rose-gold"></i> 123 Fashion Ave, Paris, France</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-rose-gold"></i> +33 1 23 45 67 89</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-rose-gold"></i> queen@lilycrown.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 pt-8 text-center">
+            <p class="text-gray-500 text-xs uppercase tracking-widest">&copy; 2024 Lily Crown. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data ---
+        const products = [
+            {
+                id: 1,
+                name: "Rose Silk Evening Gown",
+                price: 299,
+                category: "Dresses",
+                image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800&auto=format&fit=crop",
+                badge: "Best Seller"
+            },
+            {
+                id: 2,
+                name: "Diamond Tear Earrings",
+                price: 120,
+                category: "Jewelry",
+                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop",
+                badge: "New"
+            },
+            {
+                id: 3,
+                name: "Ivory Clutch Bag",
+                price: 185,
+                category: "Bags",
+                image: "https://images.unsplash.com/photo-1566150905458-1bf1dad1fb56?q=80&w=800&auto=format&fit=crop",
+                badge: null
+            },
+            {
+                id: 4,
+                name: "Gold Plated Heels",
+                price: 210,
+                category: "Shoes",
+                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
+                badge: null
+            },
+            {
+                id: 5,
+                name: "Midnight Velvet Dress",
+                price: 350,
+                category: "Dresses",
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800&auto=format&fit=crop",
+                badge: "Luxury"
+            },
+            {
+                id: 6,
+                name: "Pearl Necklace Set",
+                price: 95,
+                category: "Jewelry",
+                image: "https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=800&auto=format&fit=crop",
+                badge: null
+            },
+            {
+                id: 7,
+                name: "Blush Eau De Parfum",
+                price: 140,
+                category: "Perfumes",
+                image: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?q=80&w=800&auto=format&fit=crop",
+                badge: null
+            },
+            {
+                id: 8,
+                name: "Satin Scarf",
+                price: 45,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa3e?q=80&w=800&auto=format&fit=crop",
+                badge: "Sale"
+            }
+        ];
+
+        let cartCount = 0;
+        let wishlistItems = new Set(); // Store IDs
+
+        // --- DOM Elements ---
+        const productGrid = document.getElementById('product-grid');
+        const navbar = document.getElementById('navbar');
+        const loader = document.getElementById('loader');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const wishlistModal = document.getElementById('wishlist-modal');
+        const wishlistContent = document.getElementById('wishlist-content');
+        const wishlistContainer = document.getElementById('wishlist-items-container');
+
+        // --- Initialization ---
+        window.addEventListener('load', () => {
+            // Hide Loader
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1000);
+
+            renderProducts(products);
+            setupScrollEffects();
+        });
+
+        // --- Sticky Navbar Logic ---
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-nav', 'shadow-sm');
+                navbar.classList.remove('py-4');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('glass-nav', 'shadow-sm', 'py-2');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // --- Render Products ---
+        function renderProducts(items) {
+            productGrid.innerHTML = '';
+            
+            items.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'group scroll-reveal';
+                card.style.transitionDelay = `${index * 50}ms`;
+
+                const badgeHTML = product.badge 
+                    ? `<span class="absolute top-2 left-2 bg-rose-gold text-white text-[10px] uppercase font-bold px-2 py-1 tracking-widest z-10">${product.badge}</span>` 
+                    : '';
+                
+                const isWishlisted = wishlistItems.has(product.id);
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden rounded-md mb-4 aspect-[3/4]">
+                        ${badgeHTML}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        
+                        <!-- Actions Overlay -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-2 bg-gradient-to-t from-white via-white/80 to-transparent">
+                            <button onclick="addToCart('${product.name}')" class="w-full bg-luxury-black text-white py-3 text-xs uppercase tracking-widest hover:bg-rose-gold transition-colors shadow-lg">
+                                Add to Cart
+                            </button>
+                        </div>
+                        
+                        <button onclick="toggleWishlist(${product.id}, this)" class="heart-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-all ${isWishlisted ? 'active' : ''}">
+                            <i class="${isWishlisted ? 'fa-solid' : 'fa-regular'} fa-heart transition-colors ${isWishlisted ? 'text-red-500' : 'text-gray-600'}"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-1">${product.category}</p>
+                        <h3 class="font-serif text-lg text-luxury-black group-hover:text-rose-gold transition-colors cursor-pointer">${product.name}</h3>
+                        <p class="text-gold-accent font-bold mt-1">$${product.price}</p>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+            
+            // Re-trigger observer for new elements
+            setupScrollEffects();
+        }
+
+        // --- Interactions ---
+
+        function addToCart(productName) {
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+            
+            // Show Toast
+            toastMessage.innerText = `${productName} added to cart.`;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        function toggleWishlist(id, btn) {
+            const icon = btn.querySelector('i');
+            
+            if (wishlistItems.has(id)) {
+                wishlistItems.delete(id);
+                btn.classList.remove('active');
+                icon.classList.remove('fa-solid', 'text-red-500');
+                icon.classList.add('fa-regular', 'text-gray-600');
+            } else {
+                wishlistItems.add(id);
+                btn.classList.add('active');
+                icon.classList.remove('fa-regular', 'text-gray-600');
+                icon.classList.add('fa-solid', 'text-red-500');
+            }
+            
+            // Update counts and re-render modal if open
+            document.getElementById('wishlist-count').innerText = wishlistItems.size;
+            document.getElementById('wishlist-count').style.opacity = wishlistItems.size > 0 ? '1' : '0';
+            renderWishlistModal();
+        }
+
+        function toggleWishlistModal() {
+            const modal = wishlistModal;
+            const content = wishlistContent;
+            
+            if (modal.classList.contains('hidden')) {
+                renderWishlistModal();
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('translate-x-full');
+                }, 10); // Small delay for CSS transition
+            } else {
+                content.classList.add('translate-x-full');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); // Wait for transition
+            }
+        }
+
+        function renderWishlistModal() {
+            wishlistContainer.innerHTML = '';
+            
+            if (wishlistItems.size === 0) {
+                wishlistContainer.innerHTML = `
+                    <div class="text-center text-gray-400 mt-20 flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                            <i class="fa-regular fa-heart text-2xl"></i>
+                        </div>
+                        <p class="font-serif text-lg">Your wishlist is empty</p>
+                        <p class="text-xs mt-2">Start adding items you love.</p>
+                        <button onclick="toggleWishlistModal(); window.location.href='#categories'" class="mt-6 px-6 py-2 border border-gray-300 text-xs uppercase hover:bg-black hover:text-white transition-colors">Start Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            wishlistItems.forEach(id => {
+                const product = products.find(p => p.id === id);
+                if (product) {
+                    const item = document.createElement('div');
+                    item.className = 'flex gap-4 p-2 hover:bg-gray-50 transition-colors rounded';
+                    item.innerHTML = `
+                        <img src="${product.image}" class="w-20 h-24 object-cover rounded" alt="${product.name}">
+                        <div class="flex-1 flex flex-col justify-center">
+                            <h4 class="font-serif text-gray-800">${product.name}</h4>
+                            <p class="text-rose-gold font-bold text-sm">$${product.price}</p>
+                            <button onclick="addToCart('${product.name}')" class="text-xs uppercase tracking-wider text-left mt-2 underline text-gray-500 hover:text-black">Move to Cart</button>
+                        </div>
+                        <button onclick="toggleWishlist(${product.id}, document.querySelector('button[onclick*=\\'toggleWishlist(${product.id}\\']')); renderWishlistModal()" class="text-gray-400 hover:text-red-500">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    `;
+                    wishlistContainer.appendChild(item);
+                }
+            });
+        }
+
+        // --- Animations ---
+        function setupScrollEffects() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once active
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach((el) => {
+                observer.observe(el);
+            });
+        }
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+    </script>
+</body>
+</html>
